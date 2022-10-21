@@ -1,0 +1,15 @@
+{
+    all these values are valids with params.mat set with:
+    MAGNETS     nr*nh = 15*15 = 225
+    LEVMAG      nr*nh = 30*5 = 150
+    SOLENOIDS   nr*nh = 20*50 = 1000
+    ALL         nl = 100
+}
+
+neoI_fast = 134.08;
+levmagI_fast = 50.53; -> @ 1cm approx 450 gauss
+zeq_fast = 0.0577;
+
+neoI_accu = 91.29;
+levmagI_accu = 39.48; -> @ 1cm approx 480 gauss
+zeq_accu = 0.059;
