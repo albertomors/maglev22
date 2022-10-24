@@ -75,19 +75,53 @@ D = zeros(dimY, dimU);
 
 %% State space to transfer function
 ssModel = ss(A,B,C,D);  % State-space model
-tfModel = tf(ssModel);  % Creating a transfer matrix
-G = [tfModel(1,:); tfModel(5,:); tfModel(9,:)]; % keep only bxx byy bzz 
+G = tf(ssModel);  % Creating a transfer matrix
 
-save 'ss_matrices.mat' A B C D G
+% the tf is now a map from u(4x1) to u(15x1 aka 5x3)
+% now the y2 value is computed by y with a mean in this way:
+%
+% get x = (x1 + x2)/2
+%     y = (y1 + y2)/2
+%     z = z
+%
+% x1 x2 y1 y2 z are in array position 1 4 8 11 15
+%
+% so x = 1 + 4
+%    y = 8 + 11
+%    z = z
+%
+% so we need a matrix to make y2 = M*y = M*G*u
+%
+%    1     4       8     11      15
+M = [1 0 0 1 0 0 0 0 0 0 0 0 0 0 0;
+     0 0 0 0 0 0 0 1 0 0 1 0 0 0 0;
+     0 0 0 0 0 0 0 0 0 0 0 0 0 0 1]./[2; 2; 1];
+
+G1 = M*G;
+
+save 'ss_matrices.mat' A B C D G G1
 
 %% Solenoids control tf
+% now G1 is a map from u(4x1) to y2(3x1)
+% we want to make a map from (ux,uy,yz) -> u -> y2
+%                                       Hc   G1
+%
+% Hc has to transform (ux,uy,uz) = 3x1 to u = (4x1)
+% in this way:
+%
+% coil x1 = u(1) = +ux; coil x2 = u(3) = -ux;
+% coil y1 = u(2) = +uy; coil y2 = u(4) = -uy;
+%
+% Hc maps ux,uy,uz [0:255 pwm value] to u[-0.5:+0.5] current
+% so theres a constant gain = 0.5/255
 
-Hc = [  1  0  1;
-        0  1  1;
-       -1  0  1;
-        0 -1  1;]./255;
+Hc = 0.5/255 .* [1  0  1;
+                 0  1  1;
+                -1  0  1;
+                 0 -1  1];
 
-H = Hc.'*G.'; % transfer matrix of the chosen control strategy
+% final tf from (ux,uy,uz)' to y2
+H = G1*Hc; % transfer matrix of the chosen control strategy
 
 save 'ss_matrices.mat' Hc H -append
 
