@@ -33,8 +33,8 @@ SimpleKalmanFilter kf[6] = {SimpleKalmanFilter(e[0],e[0],0.01), \
 void setup() {
   n2v = 3.3/1024;
   v2n = 1.0/n2v;
-  o2i = 3.96; %TODO
-  i2o = 1.0/o2i;
+  i2o = 3.96; %TODO
+  o2i = 1.0/i2o;
   
   sens = 2; // the value is in [mV/gauss]
   sens_1 = 1000.0/sens; // now the value is in [gauss/V] --- = (2/27 + 1.8)/1000
@@ -69,7 +69,7 @@ void loop() {
 
     v_out[i] = filt[i] * n2v; //map from [0 : 1024] to [0 : 3.3V] ...
     dv_out[i] = v_out[i] - vref; // ... and subtract Vref to have a [-vref : vref] value
-    dv_in[i] = dv_out[i] * i2o;
+    dv_in[i] = dv_out[i] * o2i;
   }
 
   // compute x,y,z values with the chosen positive direction towards x1,y1,bottom
@@ -87,5 +87,5 @@ void loop() {
   // print what you want to see on the screen (pass array and array length)
   Serial.print(vref1,3);
   Serial.print(" ### ");
-  print_all(dv_out, sizeof(dv_out)/sizeof(dv_out[0]));
+  print_all(dv_in, sizeof(dv_in)/sizeof(dv_in[0]));
 }
