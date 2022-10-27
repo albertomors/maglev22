@@ -56,9 +56,9 @@ const double sens_1 = 1000.0/sens; // now the value is in [gauss/V]
 
 // output limitations if set ------------------------------------------------------------
 
-const double X_SCALEFACTOR = 1;
-const double Y_SCALEFACTOR = 1;
-const double Z_SCALEFACTOR = .4; // prioritize x & y control
+const int MAX_OUTPUT_X = 255;
+const int MAX_OUTPUT_Y = 255;
+const int MAX_OUTPUT_Z = 100; // prioritize x & y control
 
 // pid parameters -----------------------------------------------------------------------
 

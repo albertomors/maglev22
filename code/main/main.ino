@@ -112,8 +112,8 @@ void loop()
   for(int i=0; i<5; i++){
     readings[i] = analogRead(SENSOR_ARRAY[i]);
 
-    v_out[i] = readings[i]*n2v; //map from [0 : 1024] to [0 : 3.3V] ...
-    dv_out[i] = v_out[i] - vref; // ... and subtract Vref to have a [-vref : vref] value
+    v_out[i] = readings[i]; //map from [0 : 1024] to [0 : 3.3V] ...
+    dv_out[i] = v_out[i] - vref*v2n; // ... and subtract Vref to have a [-vref : vref] value
     dv_in[i] = dv_out[i]*o2i; //divide by G
     
     filt[i] = kf[i].updateEstimate(dv_in[i]); //filter datas
@@ -125,7 +125,7 @@ void loop()
   t2 = micros()-t1;
 
   /* This is the couples of COILS and sensors placement. If the maglev is so much off-center                  
-   * towards X1 the right sensor to prioritize is y1 instead of y2, more sensible. Same thing
+   * towards X1 the right sensor to priotize is y1 instead of y2, more sensible. Same thing
    * if the maglev is towards Y2 the most sensitive and accurate sensor is x1 instead of x2.
    * If it's almost on the center the weights don't differ too much.
    *                   
@@ -142,11 +142,11 @@ void loop()
    *                     
    */
 
-  dwx2 = (dv_in[2] - dv_in[3]) * 0.5 / 0.4; // use y to estimate the X-weights [how much priority give to x2 than to x1]
+  dwx2 = (filt[2] - filt[3]) * 0.5 / 0.4; // use y to estimate the X-weights [how much priority give to x2 than to x1]
   wx2 = 0.5 + dwx2 * 0.5;
   wx1 = 1 - wx2;
   
-  dwy1 = (dv_in[0] - dv_in[1]) * 0.5 / 0.4; // instead use x to estimate the Y-weights [how much priority give to y1 than to y2]
+  dwy1 = (filt[0] - filt[1]) * 0.5 / 0.4; // instead use x to estimate the Y-weights [how much priority give to y1 than to y2]
   wy1 = 0.5 + dwy1 * 0.5;
   wy2 = 1 - wy1;
 
@@ -212,9 +212,9 @@ void loop()
   uz[1] = uz[0];
 
   // give priorities to the controller [values between 0 and 1]
-  ux[0] = round(ux[0] * X_SCALEFACTOR);
-  uy[0] = round(uy[0] * Y_SCALEFACTOR);
-  uz[0] = round(uz[0] * Z_SCALEFACTOR);
+//  ux[0] = round(max(ux[0],MAX_OUTPUT_X));
+//  uy[0] = round(max(uy[0],MAX_OUTPUT_Y));
+//  uz[0] = round(max(uz[0],MAX_OUTPUT_Z)); //reduced
 
   turn_X_NEW(ux[0], uz[0]);
   turn_Y_NEW(uy[0], uz[0]);

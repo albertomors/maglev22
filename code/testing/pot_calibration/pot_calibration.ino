@@ -1,5 +1,7 @@
 /*
  * Author: Morselli Alberto
+ * Project: maglev22
+ * 
  * This tool allows you to set all the potentiometer in the board in the correct way. Use it with the levmag wood stand that make it stays centered on [x,y,z] = [0,0,z_eq]
  * where z_eq is approx 2.5+0.4+1.8=4.7 mm from the permanent magnets top surface, and 2.9 mm from the top soft mat layer. With this setup, set all the potentiometer so that
  * dv_out is as close as possible to zero.

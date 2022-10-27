@@ -22,8 +22,8 @@ void setup() {
 }
 
 void attract(byte c_a, byte c_b, byte c_enable, int value){
-  digitalWrite(c_a, LOW);
-  digitalWrite(c_b, HIGH);
+  digitalWrite(c_a, HIGH);
+  digitalWrite(c_b, LOW);
   analogWrite(c_enable, value);
 }
 
