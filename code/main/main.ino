@@ -173,7 +173,7 @@ void loop()
 
   // get gauss value
   for(int i=0; i<3; i++){
-    g[i] = u[i] * sens1;
+    g[i] = u[i] * sens_1;
   }
 
   //correct signs of the errors
