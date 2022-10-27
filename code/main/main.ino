@@ -179,7 +179,7 @@ void loop()
   //correct signs of the errors
   ex[0] = u[0]; //towards x1 => positive val => x1 repel (>=0)
   ey[0] = u[1]; //towards y1 => positive val => y1 repel (>=0)
-  ez[0] = 0; //towards z => positive val => to lift all coils must attract (<0) => sign change
+  ez[0] = u[2]; //towards z => positive val => to lift all coils must attract (<0) => sign change
 
   Serial.print("#e> ");
   Serial.print(ex[0]);
