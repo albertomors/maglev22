@@ -47,8 +47,8 @@ const uint8_t SENSOR_ARRAY[5] = {SENSOR_x1, SENSOR_x2, SENSOR_y1, SENSOR_y2, SEN
 
 const double n2v = 3.3/256;
 const double v2n = 1.0/n2v;
-const double o2i = 3.96; // ad623 gain set TODO
-const double i2o = 1.0/o2i;
+const double i2o = 3.96; // ad623 gain set TODO
+const double o2i = 1.0/i2o;
 const double vref = 1.584;
 
 const double sens = 2; // the value is in [mV/gauss], sens1;
@@ -70,6 +70,6 @@ const double Z_SCALEFACTOR = .4; // prioritize x & y control
 #define KD_Y KD_X
 #define KI_Y 0
 
-#define KP_Z 1
-#define KD_Z 0.01
+#define KP_Z KP_X
+#define KD_Z KD_X
 #define KI_Z 0
