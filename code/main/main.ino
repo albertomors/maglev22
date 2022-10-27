@@ -179,7 +179,7 @@ void loop()
   //correct signs of the errors
   ex[0] = u[0]; //towards x1 => positive val => x1 repel (>=0)
   ey[0] = u[1]; //towards y1 => positive val => y1 repel (>=0)
-  ez[0] = u[2]; //towards z => positive val => to lift all coils must attract (<0) => sign change
+  ez[0] = -u[2]; //towards z => positive val => to lift all coils must attract (<0) => sign change
 
   Serial.print("#e> ");
   Serial.print(ex[0]);
@@ -210,8 +210,7 @@ void loop()
   ux[1] = ux[0];
   uy[1] = uy[0];
   uz[1] = uz[0];
-
-  // give priorities to the controller [values between 0 and 1]
+  
 //  ux[0] = round(max(ux[0],MAX_OUTPUT_X));
 //  uy[0] = round(max(uy[0],MAX_OUTPUT_Y));
 //  uz[0] = round(max(uz[0],MAX_OUTPUT_Z)); //reduced
