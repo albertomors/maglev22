@@ -125,7 +125,7 @@ void loop()
   t2 = micros()-t1;
 
   /* This is the couples of COILS and sensors placement. If the maglev is so much off-center                  
-   * towards X1 the right sensor to priotize is y1 instead of y2, more sensible. Same thing
+   * towards X1 the right sensor to prioritize is y1 instead of y2, more sensible. Same thing
    * if the maglev is towards Y2 the most sensitive and accurate sensor is x1 instead of x2.
    * If it's almost on the center the weights don't differ too much.
    *                   
