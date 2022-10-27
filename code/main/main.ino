@@ -211,9 +211,10 @@ void loop()
   uy[1] = uy[0];
   uz[1] = uz[0];
   
-//  ux[0] = round(max(ux[0],MAX_OUTPUT_X));
-//  uy[0] = round(max(uy[0],MAX_OUTPUT_Y));
-//  uz[0] = round(max(uz[0],MAX_OUTPUT_Z)); //reduced
+  // give priorities to the controller along the axis [contrain between [-255<=-LIM:+LIM<=255]
+//  ux[0] = round(constrain(ux[0],-MAX_OUTPUT_X,+MAX_OUTPUT_X));
+//  uy[0] = round(constrain(uy[0],-MAX_OUTPUT_Y,+MAX_OUTPUT_Y));
+//  uz[0] = round(constrain(uz[0],-MAX_OUTPUT_Z,+MAX_OUTPUT_Z)); //reduced
 
   turn_X_NEW(ux[0], uz[0]);
   turn_Y_NEW(uy[0], uz[0]);
