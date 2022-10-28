@@ -22,8 +22,8 @@ void setup() {
 }
 
 void attract(byte c_a, byte c_b, byte c_enable, int value){
-  digitalWrite(c_a, HIGH);
-  digitalWrite(c_b, LOW);
+  digitalWrite(c_a, LOW);
+  digitalWrite(c_b, HIGH);
   analogWrite(c_enable, value);
 }
 
@@ -37,4 +37,10 @@ void turnoff(byte c_a, byte c_b, byte c_enable = 0, int value = 0){
 }
 
 void loop() {
+  Serial.println("1");
+  repel(Y1_A,Y1_B,ENABLE_Y1,0);
+  attract(Y2_A,Y2_B,ENABLE_Y2,0);
+  repel(X1_A,X1_B,ENABLE_X1,0);
+  attract(X2_A,X2_B,ENABLE_X2,0);
+  delay(2000);
 }

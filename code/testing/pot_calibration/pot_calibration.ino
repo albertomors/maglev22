@@ -13,8 +13,8 @@
  */
 #include <SimpleKalmanFilter.h>
 
-uint16_t readings[5], filt[5];
-double v_out[5], dv_out[5], dv_in[5], u[3], g[3];
+uint16_t readings[5];
+double v_out[5], dv_out[5], dv_in[5], filt[5], u[3], g[3];
 
 double vref, vref1, n2v, v2n;
 double sens, sens_1, o2i, i2o;
@@ -23,19 +23,19 @@ double sens, sens_1, o2i, i2o;
 // and use n>> values printed on the serial monitor to calc std deviation [corrected, the one with n-1] = s
 // then to get the 99.7% coverage interval multiply s by 3 to get 3*s = {2.92 3.06  2.96  2.98  3.65}
 
-uint8_t e[5] = {8,8,8,8,8};
+const double e[5] = {0.001, 0.001, 0.001, 0.001, 0.001};
 SimpleKalmanFilter kf[6] = {SimpleKalmanFilter(e[0],e[0],0.01), \
                             SimpleKalmanFilter(e[1],e[1],0.01), \
                             SimpleKalmanFilter(e[2],e[2],0.01), \
                             SimpleKalmanFilter(e[3],e[3],0.01), \
                             SimpleKalmanFilter(e[4],e[4],0.01), \
                                                                 \
-                            SimpleKalmanFilter(0.02, 0.02, 0.01)}; //last one is for vref
+                            SimpleKalmanFilter(0.001, 0.001, 0.01)}; //last one is for vref
 
 void setup() {
   n2v = 3.3/1024;
   v2n = 1.0/n2v;
-  i2o = 3.96; %TODO
+  i2o = 3.52; //TODO
   o2i = 1.0/i2o;
   
   sens = 2; // the value is in [mV/gauss]
@@ -67,19 +67,19 @@ void loop() {
   for(int i=0; i<5; i++){
     int k = i+15;
     readings[i] = analogRead(k);
-    filt[i] = kf[i].updateEstimate(readings[i]); //read and filter adc data [0-1024]
 
-    v_out[i] = filt[i] * n2v; //map from [0 : 1024] to [0 : 3.3V] ...
+    v_out[i] = readings[i] * n2v; //map from [0 : 1024] to [0 : 3.3V] ...
     dv_out[i] = v_out[i] - vref; // ... and subtract Vref to have a [-vref : vref] value
     dv_in[i] = dv_out[i] * o2i;
+    filt[i] = kf[i].updateEstimate(dv_in[i]); //read and filter data
   }
 
   // compute x,y,z values with the chosen positive direction towards x1,y1,bottom
   // SO: ux/uy >= 0 says the levmag is towards x1,y1
   //     uz >= 0 says the levmag is lower than z_eq, towards the bottom
-  u[0] = (dv_in[0] - dv_in[1]) * 0.5;
-  u[1] = (dv_in[2] - dv_in[3]) * 0.5;
-  u[2] = dv_in[4];
+  u[0] = (filt[0] - filt[1]) * 0.5;
+  u[1] = (filt[2] - filt[3]) * 0.5;
+  u[2] = filt[4];
 
   // get gauss values red in the 3 axis
   for(int i=0; i<3; i++){
@@ -89,5 +89,5 @@ void loop() {
   // print what you want to see on the screen (pass array and array length)
   Serial.print(vref1,3);
   Serial.print(" ### ");
-  print_all(dv_in, sizeof(dv_in)/sizeof(dv_in[0]));
+  print_all(g, sizeof(g)/sizeof(g[0]));
 }

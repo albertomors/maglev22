@@ -1,6 +1,6 @@
 /*
  * Author: Morselli Alberto
- * Project: Maglev PID controller
+ * Project: maglev22
  * Date: Summer-Autumn 2022
  *
  *
@@ -47,8 +47,8 @@
 
 void setup()
 {
-  analogReadResolution(8);
-  analogReadAveraging(2);
+  analogReadResolution(10);
+  analogReadAveraging(3);
   analogWriteResolution(8);
 
   //Code running freq is approx 10 kHz
@@ -85,7 +85,7 @@ double uy[2] = {0.0,0.0};
 double uz[2] = {0.0,0.0};
 
 uint16_t readings[5];
-double v_out[5], dv_out[5], filt[5], u[3], g[3];
+double v_out[5], dv_out[5], dv_in[5], filt[5], u[3], g[3];
 
 double dwx2,dwy1,wx1,wx2,wy1,wy2;
 
@@ -112,14 +112,14 @@ void loop()
   for(int i=0; i<5; i++){
     readings[i] = analogRead(SENSOR_ARRAY[i]);
 
-    v_out[i] = readings[i]; //map from [0 : 1024] to [0 : 3.3V] ...
-    dv_out[i] = v_out[i] - vref*v2n; // ... and subtract Vref to have a [-vref : vref] value
+    v_out[i] = readings[i]*n2v; //map from [0 : 1024] to [0 : 3.3V] ...
+    dv_out[i] = v_out[i] - vref; // ... and subtract Vref to have a [-vref : vref] value
     dv_in[i] = dv_out[i]*o2i; //divide by G
     
     filt[i] = kf[i].updateEstimate(dv_in[i]); //filter datas
 
-    Serial.print(dv_in[i],4);
-    Serial.print(" ");
+//    Serial.print(filt[i],4);
+//    Serial.print(" ");
   }
 
   t2 = micros()-t1;
@@ -167,25 +167,31 @@ void loop()
   //     [if is towards x1 but flipped on x2 the total ux may be <=>0 !!! #TODO]
   //     uz >= 0 says the levmag is lower than z_eq, towards the bottom
    
-  u[0] = dv_in[0]*wx1 - dv_in[1]*wx2;
-  u[1] = dv_in[2]*wy1 - dv_in[3]*wy2;
-  u[2] = dv_in[4];
+  u[0] = filt[0]*wx1 - filt[1]*wx2;
+  u[1] = filt[2]*wy1 - filt[3]*wy2;
+  u[2] = filt[4];
 
+//  Serial.print("#g> ");
   // get gauss value
   for(int i=0; i<3; i++){
     g[i] = u[i] * sens_1;
+//    Serial.print(g[i]);
+//    Serial.print(" ");
   }
 
   //correct signs of the errors
-  ex[0] = u[0]; //towards x1 => positive val => x1 repel (>=0)
-  ey[0] = u[1]; //towards y1 => positive val => y1 repel (>=0)
-  ez[0] = -u[2]; //towards z => positive val => to lift all coils must attract (<0) => sign change
+  ex[0] = g[0]; //towards x1 => positive val => x1 repel (>=0)
+  ey[0] = g[1]; //towards y1 => positive val => y1 repel (>=0)
+  ez[0] = -g[2]; //towards z => positive val => to lift all coils must attract (<0) => sign change
 
-  Serial.print("#e> ");
+//  Serial.print("#e> ");
+  Serial.print("ex:");
   Serial.print(ex[0]);
   Serial.print(" ");
+  Serial.print("ey:");
   Serial.print(ey[0]);
   Serial.print(" ");
+  Serial.print("ez:");
   Serial.print(ez[0]);
   Serial.print(" ");
 
@@ -194,11 +200,14 @@ void loop()
   uy[0] = uy[1] + KP_Y*(ey[0]-ey[1]) + KI_Y*ey[0] + KD_Y*(ey[0] - 2*ey[1] + ey[2]);
   uz[0] = uz[1] + KP_Z*(ez[0]-ez[1]) + KI_Z*ez[0] + KD_Z*(ez[0] - 2*ez[1] + ez[2]);
 
-  Serial.print("#pid> ");
+//  Serial.print("#pid> ");
+  Serial.print("ux:");
   Serial.print(ux[0]);
   Serial.print(" ");
+  Serial.print("uy:");
   Serial.print(uy[0]);
   Serial.print(" ");
+  Serial.print("uz:");
   Serial.print(uz[0]);
   Serial.print(" ");
   
@@ -210,18 +219,18 @@ void loop()
   ux[1] = ux[0];
   uy[1] = uy[0];
   uz[1] = uz[0];
-  
-  // give priorities to the controller along the axis [contrain between [-255<=-LIM:+LIM<=255]
-//  ux[0] = round(constrain(ux[0],-MAX_OUTPUT_X,+MAX_OUTPUT_X));
-//  uy[0] = round(constrain(uy[0],-MAX_OUTPUT_Y,+MAX_OUTPUT_Y));
-//  uz[0] = round(constrain(uz[0],-MAX_OUTPUT_Z,+MAX_OUTPUT_Z)); //reduced
 
-  turn_X_NEW(ux[0], uz[0]);
-  turn_Y_NEW(uy[0], uz[0]);
+  // give priorities to the controller along the axis [contrain between [-255<=-LIM:+LIM<=255]
+  ux[0] = round(constrain(ux[0],-MAX_OUTPUT_X,+MAX_OUTPUT_X));
+  uy[0] = round(constrain(uy[0],-MAX_OUTPUT_Y,+MAX_OUTPUT_Y));
+  uz[0] = round(constrain(uz[0],-MAX_OUTPUT_Z,+MAX_OUTPUT_Z)); //reduced
+
+  turn_X_NEW_final(ux[0], uz[0]);
+  turn_Y_NEW_final(uy[0], uz[0]);
 
   Serial.println();
-  Serial.print(fs);
-  Serial.print(" Hz # ");
+//  Serial.print(fs);
+//  Serial.print(" Hz # ");
 
   t3 = micros() - t1;
   fs = 1000000.0/t3;

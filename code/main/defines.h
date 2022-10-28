@@ -1,5 +1,7 @@
 /*
  * Author: Morselli Alberto
+ * Project: maglev22
+ * Date: Summer-Autumn 2022
  * 
  * 
  * This file contains the settings used for the implementation:
@@ -45,9 +47,9 @@ const uint8_t SENSOR_ARRAY[5] = {SENSOR_x1, SENSOR_x2, SENSOR_y1, SENSOR_y2, SEN
 
 // others sensors constants ------------------------------------------------------------
 
-const double n2v = 3.3/256;
+const double n2v = 3.3/1024;
 const double v2n = 1.0/n2v;
-const double i2o = 3.96; // ad623 gain set TODO
+const double i2o = 3.52; // ad623 gain set TODO
 const double o2i = 1.0/i2o;
 const double vref = 1.584;
 
@@ -62,14 +64,14 @@ const int MAX_OUTPUT_Z = 100; // prioritize x & y control
 
 // pid parameters -----------------------------------------------------------------------
 
-#define KP_X 1
-#define KD_X 0.01
+#define KP_X 1.2
+#define KD_X 0.3
 #define KI_X 0
 
 #define KP_Y KP_X
 #define KD_Y KD_X
 #define KI_Y 0
 
-#define KP_Z KP_X
-#define KD_Z KD_X
+#define KP_Z 0.8
+#define KD_Z 0.1
 #define KI_Z 0
