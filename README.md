@@ -1,7 +1,7 @@
 # Re-design of a magnetic levitation platform: from an early prototype to a working system
 repo for myy Bachelor Thesis in Electronic Engineering - November 2022 - Università degli Studi di Padova @unipd
 
-[Download the paper](maglev22.pdf)
+[Download the paper](https://github.com/albertomors/maglev22/blob/b5a09330e3dea7a6b91397591241a9633b680332/Bachelor%20Thesis%20-%20maglev22.pdf)
 
 ## Repository Structure
 
