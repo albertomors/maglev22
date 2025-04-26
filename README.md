@@ -1,5 +1,5 @@
 # Re-design of a magnetic levitation platform: from an early prototype to a working system
-repo for my Bachelor Thesis in Electronic Engineering - November 2022 - Università degli Studi di Padova @unipd
+Bachelor Thesis in Electronic Engineering - November 2022 - Università degli Studi di Padova @unipd
 
 ## Abstract
 This work documents the modelling and re-designing of a maglev platform intended to become a take-home lab for students interested in control engineering. The platform, initially designed by a team of Norwegian students, presented a series of inefficiencies and limitations that this work seeks to remove. Thus, the final goal of this project is to fully develop and test an improved maglev platform.
