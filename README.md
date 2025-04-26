@@ -10,7 +10,9 @@ The most challenging part of this project has been entering into it without clea
 
 [Click here to read the dissertation](https://github.com/albertomors/maglev22/blob/b5a09330e3dea7a6b91397591241a9633b680332/Bachelor%20Thesis%20-%20maglev22.pdf)
 
-## Repository Structure
+<img src="https://github.com/albertomors/maglev22/blob/main/model_fusion.png" width="400">
+
+## Structure
 
 ```
 maglev22/
@@ -23,8 +25,6 @@ maglev22/
 ├── README.md                          # Project documentation
 └── model_fusion.png                   # Picture of the prototype built
 ```
-
-<img src="https://github.com/albertomors/maglev22/blob/main/model_fusion.png" width="400">
 
 ## License
 
