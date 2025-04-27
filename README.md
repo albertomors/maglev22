@@ -8,7 +8,8 @@ The thesis introduces both the theoretical framework behind the modeling of the 
 
 The most challenging part of this project has been entering into it without clear guidelines of the design choices made by the previous team. It is precisely for this reason that this work does not just aim at reporting on the project itself, but also at offering documentation that is as clear as possible, intended to help a potential future team bringing the project to its next phase.
 
-[Click here to read the dissertation](https://github.com/albertomors/maglev22/blob/b5a09330e3dea7a6b91397591241a9633b680332/Bachelor%20Thesis%20-%20maglev22.pdf)
+[Click here to read the dissertation](https://github.com/albertomors/maglev22/blob/b5a09330e3dea7a6b91397591241a9633b680332/Bachelor%20Thesis%20-%20maglev22.pdf)\
+[Click here to reach the main repository for the current version of the project](https://github.com/Hansolini/Take-home-Maglev-lab)
 
 <img src="https://github.com/albertomors/maglev22/blob/main/model_fusion.png" width="400">
 
