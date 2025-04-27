@@ -30,8 +30,8 @@ maglev22/
 In the meantime the project has moved on, see https://github.com/Hansolini/Take-home-Maglev-lab for the main repo handling this project. I contributed again to it with the design of the PCB for it's version 2.6 and 3.0. Below some videos and pictures of them.
 
 <p align="center">
-    <embed src="res/a.jpg" width="48%"/>
-    <embed src="res/b.jpg" width="48%"/>
+    <img src="res/a.jpg" width="48%"/>
+    <img src="res/b.jpg" width="48%"/>
 </p>
 <p align="center">
     <img src="res/gif.gif" width="48%"/>
