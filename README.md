@@ -10,7 +10,7 @@ The most challenging part of this project has been entering into it without clea
 
 [Click here to read the dissertation](https://github.com/albertomors/maglev22/blob/b5a09330e3dea7a6b91397591241a9633b680332/Bachelor%20Thesis%20-%20maglev22.pdf)
 
-<img src="https://github.com/albertomors/maglev22/blob/main/res/model_fusion.png" width="800">
+<img src="https://github.com/albertomors/maglev22/blob/main/res/model_fusion.png" width="400">
 
 ## Structure
 
@@ -30,8 +30,11 @@ maglev22/
 In the meantime the project has moved on, see https://github.com/Hansolini/Take-home-Maglev-lab for the main repo handling this project. I contributed again to it with the design of the PCB for it's version 2.6 and 3.0. Below some videos and pictures of them.
 
 <p align="center">
-    <embed src="res/gif.gif"/>
-    <embed src="res/b.pdf" width="45%" />
+    <embed src="res/a.jpg" width="48%"/>
+    <embed src="res/b.jpg" width="48%"/>
+</p>
+<p align="center">
+    <img src="res/gif.gif" width="48%"/>
 </p>
 
 ## License
